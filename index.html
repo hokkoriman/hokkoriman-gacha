@@ -225,20 +225,34 @@ function tenGacha() {
 
     card.className = "card " + draw.rarity;
 
-    card.innerHTML = `
-      <div class="card-number">
-        ${i + 1}枚目
-      </div>
-
-      <div class="card-name">
-        ${draw.data[0]}<br>
-        ${draw.data[1]}
-      </div>
-
-      <div class="rarity">
-        ${draw.rarity}
-      </div>
+    if (draw.data[2]) {
+  card.innerHTML = `
+    <img
+      src="${draw.data[2]}"
+      alt="${draw.data[1]}"
+      style="
+        width:100%;
+        height:100%;
+        object-fit:contain;
+        display:block;
+      "
     `;
+} else {
+  card.innerHTML = `
+    <div class="card-number">
+      ${i + 1}枚目
+    </div>
+
+    <div class="card-name">
+      ${draw.data[0]}<br>
+      ${draw.data[1]}
+    </div>
+
+    <div class="rarity">
+      ${draw.rarity}
+    </div>
+  `;
+}
 
     result.appendChild(card);
   }
