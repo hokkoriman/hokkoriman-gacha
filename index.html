@@ -25,6 +25,7 @@ h1{margin:8px 0;font-size:28px}.rate{font-weight:bold;margin-bottom:15px}
 #flash{position:fixed;inset:0;background:white;opacity:0;pointer-events:none;z-index:999}.white-flash{animation:whiteFlash .48s ease-out}
 @keyframes whiteFlash{0%{opacity:0}20%{opacity:.95}100%{opacity:0}}
 #name{min-height:38px;margin-top:8px;font-size:23px;font-weight:bold}#msg{min-height:30px;margin-top:8px;font-size:17px;font-weight:bold}
+.blog-link{display:inline-block;margin-top:22px;padding:12px 20px;border:2px solid #7a5317;border-radius:12px;color:#5a390c;background:rgba(255,255,255,.55);font-size:16px;font-weight:bold;text-decoration:none}.blog-link:active{transform:translateY(2px)}
 @media(max-width:600px){#stage{height:390px}h1{font-size:25px}#btn{font-size:21px}}
 </style>
 </head>
@@ -32,7 +33,7 @@ h1{margin:8px 0;font-size:28px}.rate{font-weight:bold;margin-bottom:15px}
 <h1>ほっこりマンガチャ</h1>
 <div class="rate">C 70％ ／ R 26％ ／ SR 4％</div>
 <button id="btn" onclick="gacha()">1枚引く！</button>
-<div id="stage"></div><div id="name"></div><div id="msg">テスト中：何回でも引けます</div><div id="flash"></div>
+<div id="stage"></div><div id="name"></div><div id="msg">テスト中：何回でも引けます</div><div id="flash"></div><a class="blog-link" href="https://ameblo.jp/mister-shimo">「Mr.しものまだまだ前途遼遠」へ</a>
 <script>
 const C=[["C001","Mr.しも"],["C002","北畠社長"],["C003","進藤 歩"],["C004","魚河岸 喜平次"],["C005","金山 譲"],["C006","チャック・ザ・クラッシャー"],["C007","Mr.レモ"],["C008","G（ジー）"],["C009","コビー・グッドソン"],["C010","シン"],["C011","クライム"],["C012","メカMr.しも"],["C013","ロマン・オルロフ"],["C014","ジュエル市ノ瀬"],["C015","須王 一矢"],["C016","橘 誠士郎"],["C017","仙石・GB・秀兵衛"]];
 const R=[["R001","ザ・ミック"],["R002","リー・イェフー"],["R003","サザト"],["R004","金定 雅"],["R005","カツカレーライス"],["R006","クリス・デプス"]];
@@ -44,8 +45,9 @@ function sleep(ms){return new Promise(resolve=>setTimeout(resolve,ms))}
 async function showPack(file,time,type){stage.innerHTML="";const img=document.createElement("img");img.src=file;img.className="pack "+type;stage.appendChild(img);await sleep(time)}
 function loadCardImage(id,img){const ext=[".png",".jpg",".jpeg",".webp",".PNG",".JPG",".JPEG",".WEBP"];let i=0;function next(){if(i>=ext.length){img.alt="画像を読み込めませんでした";return}img.src=id+ext[i];i++}img.onerror=next;next()}
 function whiteFlash(){flash.className="";void flash.offsetWidth;flash.className="white-flash"}
-function showResult(result){stage.innerHTML="";const box=document.createElement("div");box.className="result card-enter";if(result.rarity==="R")box.className="result R";if(result.rarity==="SR"){whiteFlash();box.className="result SR"}const img=document.createElement("img");img.alt=result.card[1];loadCardImage(result.card[0],img);box.appendChild(img);stage.appendChild(box);name.textContent=result.rarity+"　"+result.card[1]}
-async function gacha(){if(playing)return;playing=true;btn.disabled=true;name.textContent="";msg.textContent="";const result=draw();await showPack("袋1.jpg",1200,"pack-in");await showPack("袋2.png",1000,"pack-hit");await showPack("袋3.png",1200,"pack-hit");const lastPack=stage.querySelector("img");if(lastPack)lastPack.className="pack pack-out";await sleep(450);stage.innerHTML="";await sleep(600);showResult(result);await sleep(1000);playing=false;btn.disabled=false;msg.textContent="もう一枚引く？"}
+function preloadCard(id){return new Promise(resolve=>{const ext=[".png",".jpg",".jpeg",".webp",".PNG",".JPG",".JPEG",".WEBP"];let i=0;const img=new Image();function next(){if(i>=ext.length){resolve(null);return}img.src=id+ext[i++]};img.onload=()=>resolve(img);img.onerror=next;next()})}
+function showResult(result,img){stage.innerHTML="";const box=document.createElement("div");box.className="result card-enter";if(result.rarity==="R")box.className="result R";if(result.rarity==="SR"){whiteFlash();box.className="result SR"}if(img){img.alt=result.card[1];box.appendChild(img)}stage.appendChild(box);name.textContent=result.rarity+"　"+result.card[1]}
+async function gacha(){if(playing)return;playing=true;btn.disabled=true;name.textContent="";msg.textContent="";const result=draw();const imagePromise=preloadCard(result.card[0]);await showPack("袋1.jpg",1200,"pack-in");await showPack("袋2.png",1000,"pack-hit");await showPack("袋3.png",1200,"pack-hit");const lastPack=stage.querySelector("img");if(lastPack)lastPack.className="pack pack-out";await sleep(450);stage.innerHTML="";await sleep(600);const loadedImage=await imagePromise;showResult(result,loadedImage);await sleep(1000);playing=false;btn.disabled=false;msg.textContent="もう一枚引く？"}
 </script>
 </body>
 </html>
