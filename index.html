@@ -63,6 +63,14 @@ button:active {
 
   padding: 8px;
   font-weight: bold;
+  overflow: hidden;
+}
+
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 .card-number {
@@ -148,39 +156,39 @@ C 70％ ／ R 26％ ／ SR 4％
 <script>
 
 const common = [
-["C001","Mr.しも","file_00000000f79c81f9b7b48587c09cf900.png"],,
-["C002","北畠社長"],
-["C003","進藤 歩"],
-["C004","魚河岸 喜平次"],
-["C005","金山 譲"],
-["C006","チャック・ザ・クラッシャー"],
-["C007","Mr.レモ"],
-["C008","G（ジー）"],
-["C009","コビー・グッドソン"],
-["C010","シン"],
-["C011","クライム"],
-["C012","メカMr.しも"],
-["C013","ロマン・オルロフ"],
-["C014","ジュエル市ノ瀬"],
-["C015","須王 一矢"],
-["C016","橘 誠士郎"],
-["C017","仙石・GB・秀兵衛"]
+  ["C001","Mr.しも","file_00000000f79c81f9b7b48587c09cf900.png"],
+  ["C002","北畠社長"],
+  ["C003","進藤 歩"],
+  ["C004","魚河岸 喜平次"],
+  ["C005","金山 譲"],
+  ["C006","チャック・ザ・クラッシャー"],
+  ["C007","Mr.レモ"],
+  ["C008","G（ジー）"],
+  ["C009","コビー・グッドソン"],
+  ["C010","シン"],
+  ["C011","クライム"],
+  ["C012","メカMr.しも"],
+  ["C013","ロマン・オルロフ"],
+  ["C014","ジュエル市ノ瀬"],
+  ["C015","須王 一矢"],
+  ["C016","橘 誠士郎"],
+  ["C017","仙石・GB・秀兵衛"]
 ];
 
 const rare = [
-["R001","ザ・ミック"],
-["R002","リー・イェフー"],
-["R003","サザト"],
-["R004","金定 雅"],
-["R005","カツカレーライス"],
-["R006","クリス・デプス"]
+  ["R001","ザ・ミック"],
+  ["R002","リー・イェフー"],
+  ["R003","サザト"],
+  ["R004","金定 雅"],
+  ["R005","カツカレーライス"],
+  ["R006","クリス・デプス"]
 ];
 
 const superRare = [
-["SR001","ジンノ・シンスケ"],
-["SR002","ベン“S・A・D”ジョナー"],
-["SR003","城戸真絃"],
-["SR004","ダニエル・コステロ"]
+  ["SR001","ジンノ・シンスケ"],
+  ["SR002","ベン“S・A・D”ジョナー"],
+  ["SR003","城戸真絃"],
+  ["SR004","ダニエル・コステロ"]
 ];
 
 function randomCharacter(list) {
@@ -188,7 +196,6 @@ function randomCharacter(list) {
 }
 
 function drawOne() {
-
   const r = Math.random() * 100;
 
   if (r < 70) {
@@ -212,33 +219,38 @@ function drawOne() {
 }
 
 function tenGacha() {
-
   const result = document.getElementById("gacha-result");
 
   result.innerHTML = "";
 
   for (let i = 0; i < 10; i++) {
-
     const draw = drawOne();
 
     const card = document.createElement("div");
-
     card.className = "card " + draw.rarity;
 
-   if (draw.data[2]) {
-  card.innerHTML = `
-    <img
-      src="${draw.data[2]}"
-      alt="${draw.data[1]}"
-      style="
-        width:100%;
-        height:100%;
-        object-fit:contain;
-        display:block;
-      "
-    >
-  `;
-} else {
+    if (draw.data[2]) {
+      const img = document.createElement("img");
+      img.src = draw.data[2];
+      img.alt = draw.data[1];
+
+      card.appendChild(img);
+    } else {
+      card.innerHTML = `
+        <div class="card-number">
+          ${i + 1}枚目
+        </div>
+
+        <div class="card-name">
+          ${draw.data[0]}<br>
+          ${draw.data[1]}
+        </div>
+
+        <div class="rarity">
+          ${draw.rarity}
+        </div>
+      `;
+    }
 
     result.appendChild(card);
   }
