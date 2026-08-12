@@ -225,7 +225,7 @@ function tenGacha() {
 
     card.className = "card " + draw.rarity;
 
-    if (draw.data[2]) {
+   if (draw.data[2]) {
   card.innerHTML = `
     <img
       src="${draw.data[2]}"
@@ -236,7 +236,8 @@ function tenGacha() {
         object-fit:contain;
         display:block;
       "
-    `;
+    >
+  `;
 } else {
   card.innerHTML = `
     <div class="card-number">
