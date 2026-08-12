@@ -4,259 +4,123 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ほっこりマン10連ガチャ</title>
+<title>ほっこりマンガチャ</title>
 
 <style>
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  padding: 20px;
-  background: #f3d889;
+  padding: 20px 12px 40px;
+  background:
+    radial-gradient(circle at top, #fff0b0 0%, #e6bd55 45%, #b78325 100%);
   font-family: sans-serif;
   text-align: center;
+  min-height: 100vh;
+  color: #222;
 }
 
 h1 {
-  margin-bottom: 5px;
+  margin: 8px 0 6px;
+  font-size: 30px;
 }
 
 .rate {
-  margin-bottom: 20px;
   font-weight: bold;
+  margin-bottom: 12px;
 }
 
-button {
-  font-size: 22px;
+.remaining {
+  font-size: 20px;
   font-weight: bold;
-  padding: 15px 35px;
-  border: none;
-  border-radius: 12px;
+  margin: 12px 0 18px;
+}
+
+#gacha-button {
+  font-size: 24px;
+  font-weight: bold;
+  padding: 16px 42px;
+  border: 0;
+  border-radius: 14px;
   background: #d62828;
   color: white;
+  box-shadow: 0 6px 0 #821717;
   cursor: pointer;
-  box-shadow: 0 5px 0 #8d1818;
 }
 
-button:active {
-  transform: translateY(3px);
-  box-shadow: 0 2px 0 #8d1818;
+#gacha-button:active:not(:disabled) {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #821717;
 }
 
-#gacha-result {
-  max-width: 1000px;
-  margin: 30px auto;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
+#gacha-button:disabled {
+  background: #888;
+  box-shadow: none;
+  cursor: default;
 }
 
-.card {
-  aspect-ratio: 1 / 1;
-  background: white;
-  border: 5px solid white;
-  border-radius: 10px;
-  box-sizing: border-box;
-
+#stage {
+  width: min(92vw, 520px);
+  min-height: 440px;
+  margin: 28px auto 10px;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  padding: 8px;
-  font-weight: bold;
-  overflow: hidden;
+  position: relative;
 }
 
-.card img {
+.pack-image {
   width: 100%;
-  height: 100%;
+  max-height: 430px;
   object-fit: contain;
   display: block;
 }
 
-.card-number {
-  font-size: 14px;
-  margin-bottom: 8px;
+.flash {
+  animation: flashCut 0.18s ease;
 }
 
-.card-name {
-  font-size: 18px;
+@keyframes flashCut {
+  0%   { opacity: 0.2; transform: scale(0.98); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
-.C {
-  background: #eeeeee;
+.result-wrap {
+  width: min(82vw, 410px);
+  aspect-ratio: 1 / 1;
+  position: relative;
+  border-radius: 18px;
 }
 
-.R {
-  background: #ffe9a8;
+.result-card {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  border-radius: 16px;
+}
+
+.slide-in {
+  animation: cardRise 0.72s cubic-bezier(.2,.9,.25,1.18);
+}
+
+@keyframes cardRise {
+  0% {
+    opacity: 0;
+    transform: translateY(180px) scale(0.82);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-12px) scale(1.03);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.r-glow {
   box-shadow:
-    0 0 10px #ffd700,
-    0 0 25px #fff3a0;
-}
-
-.SR {
-  background: white;
-  box-shadow:
-    0 0 10px red,
-    0 0 20px orange,
-    0 0 30px yellow,
-    0 0 40px lime,
-    0 0 50px cyan,
-    0 0 60px blue,
-    0 0 70px violet;
-}
-
-.rarity {
-  margin-top: 8px;
-  font-size: 14px;
-}
-
-@media (max-width: 700px) {
-  body {
-    padding: 10px;
-  }
-
-  #gacha-result {
-    gap: 5px;
-  }
-
-  .card {
-    padding: 3px;
-    border-width: 3px;
-  }
-
-  .card-number {
-    font-size: 9px;
-  }
-
-  .card-name {
-    font-size: 10px;
-  }
-
-  .rarity {
-    font-size: 9px;
-  }
-}
-</style>
-</head>
-
-<body>
-
-<h1>ほっこりマン10連ガチャ</h1>
-
-<div class="rate">
-C 70％ ／ R 26％ ／ SR 4％
-</div>
-
-<button onclick="tenGacha()">
-10連ガチャ！
-</button>
-
-<div id="gacha-result"></div>
-
-<script>
-
-const common = [
-  ["C001","Mr.しも","file_00000000f79c81f9b7b48587c09cf900.png"],
-  ["C002","北畠社長"],
-  ["C003","進藤 歩"],
-  ["C004","魚河岸 喜平次"],
-  ["C005","金山 譲"],
-  ["C006","チャック・ザ・クラッシャー"],
-  ["C007","Mr.レモ"],
-  ["C008","G（ジー）"],
-  ["C009","コビー・グッドソン"],
-  ["C010","シン"],
-  ["C011","クライム"],
-  ["C012","メカMr.しも"],
-  ["C013","ロマン・オルロフ"],
-  ["C014","ジュエル市ノ瀬"],
-  ["C015","須王 一矢"],
-  ["C016","橘 誠士郎"],
-  ["C017","仙石・GB・秀兵衛"]
-];
-
-const rare = [
-  ["R001","ザ・ミック"],
-  ["R002","リー・イェフー"],
-  ["R003","サザト"],
-  ["R004","金定 雅"],
-  ["R005","カツカレーライス"],
-  ["R006","クリス・デプス"]
-];
-
-const superRare = [
-  ["SR001","ジンノ・シンスケ"],
-  ["SR002","ベン“S・A・D”ジョナー"],
-  ["SR003","城戸真絃"],
-  ["SR004","ダニエル・コステロ"]
-];
-
-function randomCharacter(list) {
-  return list[Math.floor(Math.random() * list.length)];
-}
-
-function drawOne() {
-  const r = Math.random() * 100;
-
-  if (r < 70) {
-    return {
-      rarity: "C",
-      data: randomCharacter(common)
-    };
-  }
-
-  if (r < 96) {
-    return {
-      rarity: "R",
-      data: randomCharacter(rare)
-    };
-  }
-
-  return {
-    rarity: "SR",
-    data: randomCharacter(superRare)
-  };
-}
-
-function tenGacha() {
-  const result = document.getElementById("gacha-result");
-
-  result.innerHTML = "";
-
-  for (let i = 0; i < 10; i++) {
-    const draw = drawOne();
-
-    const card = document.createElement("div");
-    card.className = "card " + draw.rarity;
-
-    if (draw.data[2]) {
-      const img = document.createElement("img");
-      img.src = draw.data[2];
-      img.alt = draw.data[1];
-
-      card.appendChild(img);
-    } else {
-      card.innerHTML = `
-        <div class="card-number">
-          ${i + 1}枚目
-        </div>
-
-        <div class="card-name">
-          ${draw.data[0]}<br>
-          ${draw.data[1]}
-        </div>
-
-        <div class="rarity">
-          ${draw.rarity}
-        </div>
-      `;
-    }
-
-    result.appendChild(card);
-  }
-}
-
-</script>
-
-</body>
-</html>
+    0 0 14px #fff6be
