@@ -3,51 +3,178 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ほっこりマンガチャ</title>
+<title>ほっこりマン ガチャ</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;padding:18px 10px 40px;min-height:100vh;text-align:center;font-family:sans-serif;color:#222;background:radial-gradient(circle at top,#fff0b0,#e4b94d 55%,#b98220);overflow-x:hidden}
-h1{margin:8px 0;font-size:28px}.rate{font-weight:bold;margin-bottom:15px}
-#btn{border:0;border-radius:14px;padding:15px 40px;font-size:22px;font-weight:bold;color:white;background:#d62828;box-shadow:0 6px 0 #841919}
-#btn:active:not(:disabled){transform:translateY(4px);box-shadow:0 2px 0 #841919}#btn:disabled{opacity:.65}
+h1{margin:8px 0 10px;font-size:28px}
+.greeting{font-size:18px;font-weight:bold;margin:0 0 10px}
+.counts{font-size:16px;font-weight:bold;margin:0 0 8px}
+#remain{font-size:18px;font-weight:bold;margin:10px 0 14px}
+#btn{border:0;border-radius:14px;padding:15px 40px;font-size:22px;font-weight:bold;color:#fff;background:#d62828;box-shadow:0 6px 0 #841919}
+#btn:active:not(:disabled){transform:translateY(4px);box-shadow:0 2px 0 #841919}
+#btn:disabled{opacity:.58;box-shadow:none}
 #stage{width:min(94vw,540px);height:470px;margin:20px auto 0;position:relative;display:flex;justify-content:center;align-items:center;overflow:visible}
-.pack{width:100%;max-height:440px;object-fit:contain}.pack-in{animation:packIn .28s ease-out}.pack-hit{animation:packHit .35s ease-out}.pack-out{animation:packOut .4s ease-in forwards}
+.pack{width:100%;max-height:440px;object-fit:contain}
+.pack-in{animation:packIn .28s ease-out}
+.pack-hit{animation:packHit .35s ease-out}
+.pack-out{animation:packOut .4s ease-in forwards}
 @keyframes packIn{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:scale(1)}}
 @keyframes packHit{0%{opacity:.25;transform:scale(.9)}55%{opacity:1;transform:scale(1.055)}100%{transform:scale(1)}}
 @keyframes packOut{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:0;transform:translateY(-55px) scale(.96)}}
-.result{width:min(82vw,410px);aspect-ratio:1/1;position:relative;border-radius:18px}.result img{width:100%;height:100%;object-fit:contain;display:block;border-radius:16px}
+.result{width:min(82vw,410px);aspect-ratio:1/1;position:relative;border-radius:18px}
+.result img{width:100%;height:100%;object-fit:contain;display:block;border-radius:16px}
 .card-enter{animation:cardEnter .95s cubic-bezier(.17,.89,.32,1.28)}
 @keyframes cardEnter{0%{opacity:0;transform:translateY(430px) scale(.55) rotate(-4deg)}60%{opacity:1;transform:translateY(-28px) scale(1.06) rotate(1deg)}78%{transform:translateY(12px) scale(.98)}100%{transform:translateY(0) scale(1) rotate(0)}}
 .R{animation:cardEnter .95s cubic-bezier(.17,.89,.32,1.28),goldGlow 1.2s ease-in-out .9s infinite alternate}
-@keyframes goldGlow{from{filter:brightness(1);box-shadow:0 0 10px #fff,0 0 25px #ffd84d,0 0 45px #d99b00}to{filter:brightness(1.12);box-shadow:0 0 20px white,0 0 45px #ffe76c,0 0 80px #ffb700}}
+@keyframes goldGlow{from{filter:brightness(1);box-shadow:0 0 10px #fff,0 0 25px #ffd84d,0 0 45px #d99b00}to{filter:brightness(1.12);box-shadow:0 0 20px #fff,0 0 45px #ffe76c,0 0 80px #ffb700}}
 .SR{animation:cardEnter .95s cubic-bezier(.17,.89,.32,1.28),rainbowGlow 1.35s linear .9s infinite}
 @keyframes rainbowGlow{0%{box-shadow:0 0 20px red,0 0 50px orange}20%{box-shadow:0 0 20px orange,0 0 50px yellow}40%{box-shadow:0 0 20px yellow,0 0 50px lime}60%{box-shadow:0 0 20px cyan,0 0 50px blue}80%{box-shadow:0 0 20px blue,0 0 50px violet}100%{box-shadow:0 0 20px violet,0 0 50px red}}
-#flash{position:fixed;inset:0;background:white;opacity:0;pointer-events:none;z-index:999}.white-flash{animation:whiteFlash .48s ease-out}
+#flash{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:999}
+.white-flash{animation:whiteFlash .48s ease-out}
 @keyframes whiteFlash{0%{opacity:0}20%{opacity:.95}100%{opacity:0}}
-#name{min-height:38px;margin-top:8px;font-size:23px;font-weight:bold}#msg{min-height:30px;margin-top:8px;font-size:17px;font-weight:bold}
-.blog-link{display:inline-block;margin-top:22px;padding:12px 20px;border:2px solid #7a5317;border-radius:12px;color:#5a390c;background:rgba(255,255,255,.55);font-size:16px;font-weight:bold;text-decoration:none}.blog-link:active{transform:translateY(2px)}
-@media(max-width:600px){#stage{height:390px}h1{font-size:25px}#btn{font-size:21px}}
+#name{min-height:38px;margin-top:8px;font-size:23px;font-weight:bold}
+#msg{min-height:52px;margin-top:8px;font-size:17px;font-weight:bold;line-height:1.7}
+.end-title{font-size:20px}
+.end-message{font-size:17px}
+.blog-link{display:inline-block;margin-top:22px;padding:12px 20px;border:2px solid #7a5317;border-radius:12px;color:#5a390c;background:rgba(255,255,255,.55);font-size:16px;font-weight:bold;text-decoration:none}
+.blog-link:active{transform:translateY(2px)}
+@media(max-width:600px){#stage{height:390px}h1{font-size:25px}.greeting{font-size:16px}.counts{font-size:14px}#btn{font-size:21px}}
 </style>
 </head>
 <body>
-<h1>ほっこりマンガチャ</h1>
-<div class="rate">C 70％ ／ R 26％ ／ SR 4％</div>
+<h1>ほっこりマン ガチャ</h1>
+<div class="greeting">本日もご来場、まことにありがとうございます！</div>
+<div id="counts" class="counts"></div>
+<div id="remain"></div>
 <button id="btn" onclick="gacha()">1枚引く！</button>
-<div id="stage"></div><div id="name"></div><div id="msg">テスト中：何回でも引けます</div><div id="flash"></div><a class="blog-link" href="https://ameblo.jp/mister-shimo">「Mr.しものまだまだ前途遼遠」へ</a>
+<div id="stage"></div>
+<div id="name"></div>
+<div id="msg"></div>
+<div id="flash"></div>
+<a class="blog-link" href="https://ameblo.jp/mister-shimo">「Mr.しものまだまだ前途遼遠」へ</a>
+
 <script>
 const C=[["C001","Mr.しも"],["C002","北畠社長"],["C003","進藤 歩"],["C004","魚河岸 喜平次"],["C005","金山 譲"],["C006","チャック・ザ・クラッシャー"],["C007","Mr.レモ"],["C008","G（ジー）"],["C009","コビー・グッドソン"],["C010","シン"],["C011","クライム"],["C012","メカMr.しも"],["C013","ロマン・オルロフ"],["C014","ジュエル市ノ瀬"],["C015","須王 一矢"],["C016","橘 誠士郎"],["C017","仙石・GB・秀兵衛"]];
 const R=[["R001","ザ・ミック"],["R002","リー・イェフー"],["R003","サザト"],["R004","金定 雅"],["R005","カツカレーライス"],["R006","クリス・デプス"]];
 const SR=[["SR001","ジンノ・シンスケ"],["SR002","ベン“S・A・D”ジョナー"],["SR003","城戸真絃"],["SR004","ダニエル・コステロ"]];
+
+const LIMIT=3;
+const STORAGE_KEY="hokkoriman_daily_gacha_final_v1";
 let playing=false;
+
+counts.textContent=`コモン ${C.length}種類 ／ レア ${R.length}種類 ／ スーパーレア ${SR.length}種類`;
+
+function today(){
+  const d=new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+}
+function saveDaily(d){localStorage.setItem(STORAGE_KEY,JSON.stringify(d))}
+function daily(){
+  let d;
+  try{d=JSON.parse(localStorage.getItem(STORAGE_KEY))}catch(e){}
+  if(!d||d.date!==today()){d={date:today(),count:0};saveDaily(d)}
+  return d;
+}
+function updateStatus(){
+  const d=daily();
+  const left=Math.max(0,LIMIT-d.count);
+  remain.textContent=`本日のガチャ　あと${left}回`;
+  if(left===0){
+    btn.disabled=true;
+    msg.innerHTML='<div class="end-title">本日のガチャは終了しました</div><div class="end-message">明日もご来場、心よりお待ちしております！</div>';
+  }else if(!playing){
+    btn.disabled=false;
+  }
+}
 function rand(list){return list[Math.floor(Math.random()*list.length)]}
-function draw(){const n=Math.random()*100;if(n<70)return{rarity:"C",card:rand(C)};if(n<96)return{rarity:"R",card:rand(R)};return{rarity:"SR",card:rand(SR)}}
+function draw(){
+  const n=Math.random()*100;
+  if(n<70)return{rarity:"C",card:rand(C)};
+  if(n<95)return{rarity:"R",card:rand(R)};
+  return{rarity:"SR",card:rand(SR)};
+}
 function sleep(ms){return new Promise(resolve=>setTimeout(resolve,ms))}
-async function showPack(file,time,type){stage.innerHTML="";const img=document.createElement("img");img.src=file;img.className="pack "+type;stage.appendChild(img);await sleep(time)}
-function loadCardImage(id,img){const ext=[".png",".jpg",".jpeg",".webp",".PNG",".JPG",".JPEG",".WEBP"];let i=0;function next(){if(i>=ext.length){img.alt="画像を読み込めませんでした";return}img.src=id+ext[i];i++}img.onerror=next;next()}
-function whiteFlash(){flash.className="";void flash.offsetWidth;flash.className="white-flash"}
-function preloadCard(id){return new Promise(resolve=>{const ext=[".png",".jpg",".jpeg",".webp",".PNG",".JPG",".JPEG",".WEBP"];let i=0;const img=new Image();function next(){if(i>=ext.length){resolve(null);return}img.src=id+ext[i++]};img.onload=()=>resolve(img);img.onerror=next;next()})}
-function showResult(result,img){stage.innerHTML="";const box=document.createElement("div");box.className="result card-enter";if(result.rarity==="R")box.className="result R";if(result.rarity==="SR"){whiteFlash();box.className="result SR"}if(img){img.alt=result.card[1];box.appendChild(img)}stage.appendChild(box);name.textContent=result.rarity+"　"+result.card[1]}
-async function gacha(){if(playing)return;playing=true;btn.disabled=true;name.textContent="";msg.textContent="";const result=draw();const imagePromise=preloadCard(result.card[0]);await showPack("袋1.jpg",1200,"pack-in");await showPack("袋2.png",1000,"pack-hit");await showPack("袋3.png",1200,"pack-hit");const lastPack=stage.querySelector("img");if(lastPack)lastPack.className="pack pack-out";await sleep(450);stage.innerHTML="";await sleep(600);const loadedImage=await imagePromise;showResult(result,loadedImage);await sleep(1000);playing=false;btn.disabled=false;msg.textContent="もう一枚引く？"}
+async function showPack(file,time,type){
+  stage.innerHTML="";
+  const img=document.createElement("img");
+  img.src=file;
+  img.className="pack "+type;
+  stage.appendChild(img);
+  await sleep(time);
+}
+function whiteFlash(){
+  flash.className="";
+  void flash.offsetWidth;
+  flash.className="white-flash";
+}
+function preloadCard(id){
+  return new Promise(resolve=>{
+    const ext=[".png",".jpg",".jpeg",".webp",".PNG",".JPG",".JPEG",".WEBP"];
+    let i=0;
+    const img=new Image();
+    function next(){
+      if(i>=ext.length){resolve(null);return}
+      img.src=id+ext[i++];
+    }
+    img.onload=()=>resolve(img);
+    img.onerror=next;
+    next();
+  });
+}
+function showResult(result,img){
+  stage.innerHTML="";
+  const box=document.createElement("div");
+  box.className="result card-enter";
+  if(result.rarity==="R")box.className="result R";
+  if(result.rarity==="SR"){whiteFlash();box.className="result SR"}
+  if(img){img.alt=result.card[1];box.appendChild(img)}
+  stage.appendChild(box);
+  name.textContent=result.rarity+"　"+result.card[1];
+}
+async function gacha(){
+  if(playing)return;
+  const d=daily();
+  if(d.count>=LIMIT){updateStatus();return}
+
+  playing=true;
+  btn.disabled=true;
+  name.textContent="";
+  msg.textContent="";
+
+  const result=draw();
+  const imagePromise=preloadCard(result.card[0]);
+
+  d.count++;
+  saveDaily(d);
+  remain.textContent=`本日のガチャ　あと${Math.max(0,LIMIT-d.count)}回`;
+
+  await showPack("袋1.jpg",1200,"pack-in");
+  await showPack("袋2.png",1000,"pack-hit");
+  await showPack("袋3.png",1200,"pack-hit");
+
+  const lastPack=stage.querySelector("img");
+  if(lastPack)lastPack.className="pack pack-out";
+
+  await sleep(450);
+  stage.innerHTML="";
+  await sleep(600);
+
+  const loadedImage=await imagePromise;
+  showResult(result,loadedImage);
+
+  await sleep(1000);
+  playing=false;
+
+  if(d.count>=LIMIT){
+    btn.disabled=true;
+    msg.innerHTML='<div class="end-title">本日のガチャは終了しました</div><div class="end-message">明日もご来場、心よりお待ちしております！</div>';
+  }else{
+    btn.disabled=false;
+    msg.textContent="もう一枚引く？";
+  }
+}
+updateStatus();
 </script>
 </body>
 </html>
