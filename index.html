@@ -4,122 +4,48 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ほっこりマンガチャ</title>
-
 <style>
 *{box-sizing:border-box}
-
-body{
-  margin:0;
-  padding:18px 10px 40px;
-  min-height:100vh;
-  text-align:center;
-  font-family:sans-serif;
-  color:#222;
-  background:radial-gradient(circle at top,#fff0b0,#e4b94d 55%,#b98220);
-  overflow-x:hidden;
-}
-
-h1{
-  margin:8px 0;
-  font-size:28px;
-}
-
-.rate{
-  font-weight:bold;
-  margin-bottom:15px;
-}
-
-#btn{
-  border:0;
-  border-radius:14px;
-  padding:15px 40px;
-  font-size:22px;
-  font-weight:bold;
-  color:white;
-  background:#d62828;
-  box-shadow:0 6px 0 #841919;
-}
-
-#btn:active:not(:disabled){
-  transform:translateY(4px);
-  box-shadow:0 2px 0 #841919;
-}
-
-#btn:disabled{
-  opacity:.65;
-}
-
-#stage{
-  width:min(94vw,540px);
-  height:470px;
-  margin:20px auto 0;
-  position:relative;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  overflow:visible;
-}
-
-.pack{
-  width:100%;
-  max-height:440px;
-  object-fit:contain;
-}
-
-.pack-in{
-  animation:packIn .28s ease-out;
-}
-
-@keyframes packIn{
-  from{
-    opacity:0;
-    transform:scale(.88);
-  }
-  to{
-    opacity:1;
-    transform:scale(1);
-  }
-}
-
-.pack-hit{
-  animation:packHit .35s ease-out;
-}
-
-@keyframes packHit{
-  0%{
-    opacity:.25;
-    transform:scale(.9);
-  }
-  55%{
-    opacity:1;
-    transform:scale(1.055);
-  }
-  100%{
-    transform:scale(1);
-  }
-}
-
-.pack-out{
-  animation:packOut .4s ease-in forwards;
-}
-
-@keyframes packOut{
-  from{
-    opacity:1;
-    transform:translateY(0) scale(1);
-  }
-  to{
-    opacity:0;
-    transform:translateY(-55px) scale(.96);
-  }
-}
-
-.result{
-  width:min(82vw,410px);
-  aspect-ratio:1/1;
-  position:relative;
-  border-radius:18px;
-}
-
-.result img{
-  width:100%;
+body{margin:0;padding:18px 10px 40px;min-height:100vh;text-align:center;font-family:sans-serif;color:#222;background:radial-gradient(circle at top,#fff0b0,#e4b94d 55%,#b98220);overflow-x:hidden}
+h1{margin:8px 0;font-size:28px}.rate{font-weight:bold;margin-bottom:15px}
+#btn{border:0;border-radius:14px;padding:15px 40px;font-size:22px;font-weight:bold;color:white;background:#d62828;box-shadow:0 6px 0 #841919}
+#btn:active:not(:disabled){transform:translateY(4px);box-shadow:0 2px 0 #841919}#btn:disabled{opacity:.65}
+#stage{width:min(94vw,540px);height:470px;margin:20px auto 0;position:relative;display:flex;justify-content:center;align-items:center;overflow:visible}
+.pack{width:100%;max-height:440px;object-fit:contain}.pack-in{animation:packIn .28s ease-out}.pack-hit{animation:packHit .35s ease-out}.pack-out{animation:packOut .4s ease-in forwards}
+@keyframes packIn{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:scale(1)}}
+@keyframes packHit{0%{opacity:.25;transform:scale(.9)}55%{opacity:1;transform:scale(1.055)}100%{transform:scale(1)}}
+@keyframes packOut{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:0;transform:translateY(-55px) scale(.96)}}
+.result{width:min(82vw,410px);aspect-ratio:1/1;position:relative;border-radius:18px}.result img{width:100%;height:100%;object-fit:contain;display:block;border-radius:16px}
+.card-enter{animation:cardEnter .95s cubic-bezier(.17,.89,.32,1.28)}
+@keyframes cardEnter{0%{opacity:0;transform:translateY(430px) scale(.55) rotate(-4deg)}60%{opacity:1;transform:translateY(-28px) scale(1.06) rotate(1deg)}78%{transform:translateY(12px) scale(.98)}100%{transform:translateY(0) scale(1) rotate(0)}}
+.R{animation:cardEnter .95s cubic-bezier(.17,.89,.32,1.28),goldGlow 1.2s ease-in-out .9s infinite alternate}
+@keyframes goldGlow{from{filter:brightness(1);box-shadow:0 0 10px #fff,0 0 25px #ffd84d,0 0 45px #d99b00}to{filter:brightness(1.12);box-shadow:0 0 20px white,0 0 45px #ffe76c,0 0 80px #ffb700}}
+.SR{animation:cardEnter .95s cubic-bezier(.17,.89,.32,1.28),rainbowGlow 1.35s linear .9s infinite}
+@keyframes rainbowGlow{0%{box-shadow:0 0 20px red,0 0 50px orange}20%{box-shadow:0 0 20px orange,0 0 50px yellow}40%{box-shadow:0 0 20px yellow,0 0 50px lime}60%{box-shadow:0 0 20px cyan,0 0 50px blue}80%{box-shadow:0 0 20px blue,0 0 50px violet}100%{box-shadow:0 0 20px violet,0 0 50px red}}
+#flash{position:fixed;inset:0;background:white;opacity:0;pointer-events:none;z-index:999}.white-flash{animation:whiteFlash .48s ease-out}
+@keyframes whiteFlash{0%{opacity:0}20%{opacity:.95}100%{opacity:0}}
+#name{min-height:38px;margin-top:8px;font-size:23px;font-weight:bold}#msg{min-height:30px;margin-top:8px;font-size:17px;font-weight:bold}
+@media(max-width:600px){#stage{height:390px}h1{font-size:25px}#btn{font-size:21px}}
+</style>
+</head>
+<body>
+<h1>ほっこりマンガチャ</h1>
+<div class="rate">C 70％ ／ R 26％ ／ SR 4％</div>
+<button id="btn" onclick="gacha()">1枚引く！</button>
+<div id="stage"></div><div id="name"></div><div id="msg">テスト中：何回でも引けます</div><div id="flash"></div>
+<script>
+const C=[["C001","Mr.しも"],["C002","北畠社長"],["C003","進藤 歩"],["C004","魚河岸 喜平次"],["C005","金山 譲"],["C006","チャック・ザ・クラッシャー"],["C007","Mr.レモ"],["C008","G（ジー）"],["C009","コビー・グッドソン"],["C010","シン"],["C011","クライム"],["C012","メカMr.しも"],["C013","ロマン・オルロフ"],["C014","ジュエル市ノ瀬"],["C015","須王 一矢"],["C016","橘 誠士郎"],["C017","仙石・GB・秀兵衛"]];
+const R=[["R001","ザ・ミック"],["R002","リー・イェフー"],["R003","サザト"],["R004","金定 雅"],["R005","カツカレーライス"],["R006","クリス・デプス"]];
+const SR=[["SR001","ジンノ・シンスケ"],["SR002","ベン“S・A・D”ジョナー"],["SR003","城戸真絃"],["SR004","ダニエル・コステロ"]];
+let playing=false;
+function rand(list){return list[Math.floor(Math.random()*list.length)]}
+function draw(){const n=Math.random()*100;if(n<70)return{rarity:"C",card:rand(C)};if(n<96)return{rarity:"R",card:rand(R)};return{rarity:"SR",card:rand(SR)}}
+function sleep(ms){return new Promise(resolve=>setTimeout(resolve,ms))}
+async function showPack(file,time,type){stage.innerHTML="";const img=document.createElement("img");img.src=file;img.className="pack "+type;stage.appendChild(img);await sleep(time)}
+function loadCardImage(id,img){const ext=[".png",".jpg",".jpeg",".webp",".PNG",".JPG",".JPEG",".WEBP"];let i=0;function next(){if(i>=ext.length){img.alt="画像を読み込めませんでした";return}img.src=id+ext[i];i++}img.onerror=next;next()}
+function whiteFlash(){flash.className="";void flash.offsetWidth;flash.className="white-flash"}
+function showResult(result){stage.innerHTML="";const box=document.createElement("div");box.className="result card-enter";if(result.rarity==="R")box.className="result R";if(result.rarity==="SR"){whiteFlash();box.className="result SR"}const img=document.createElement("img");img.alt=result.card[1];loadCardImage(result.card[0],img);box.appendChild(img);stage.appendChild(box);name.textContent=result.rarity+"　"+result.card[1]}
+async function gacha(){if(playing)return;playing=true;btn.disabled=true;name.textContent="";msg.textContent="";const result=draw();await showPack("袋1.jpg",1200,"pack-in");await showPack("袋2.png",1000,"pack-hit");await showPack("袋3.png",1200,"pack-hit");const lastPack=stage.querySelector("img");if(lastPack)lastPack.className="pack pack-out";await sleep(450);stage.innerHTML="";await sleep(600);showResult(result);await sleep(1000);playing=false;btn.disabled=false;msg.textContent="もう一枚引く？"}
+</script>
+</body>
+</html>
