@@ -104,6 +104,17 @@ h1{margin:8px 0 10px;font-size:28px}
 
 
 <script>
+const counts=document.getElementById("counts");
+const remain=document.getElementById("remain");
+const btn=document.getElementById("btn");
+const stage=document.getElementById("stage");
+const name=document.getElementById("name");
+const msg=document.getElementById("msg");
+const flash=document.getElementById("flash");
+const collectionProgress=document.getElementById("collectionProgress");
+const collectionContents=document.getElementById("collectionContents");
+const openCollection=document.getElementById("openCollection");
+
 const C=[["C001","Mr.しも"],["C002","北畠社長"],["C003","進藤 歩"],["C004","魚河岸 喜平次"],["C005","金山 譲"],["C006","チャック・ザ・クラッシャー"],["C007","Mr.レモ"],["C008","G（ジー）"],["C009","コビー・グッドソン"],["C010","シン"],["C011","クライム"],["C012","メカMr.しも"],["C013","ロマン・オルロフ"],["C014","ジュエル市ノ瀬"],["C015","須王 一矢"],["C016","橘 誠士郎"],["C017","仙石・GB・秀兵衛"]];
 const R=[["R001","ザ・ミック"],["R002","リー・イェフー"],["R003","サザト"],["R004","金定 雅"],["R005","カツカレーライス"],["R006","クリス・デプス"]];
 const SR=[["SR001","ジンノ・シンスケ"],["SR002","ベン“S・A・D”ジョナー"],["SR003","城戸真絃"],["SR004","ダニエル・コステロ"]];
@@ -134,7 +145,7 @@ function registerCard(id){
 }
 function ownedCount(prefix){return getCollection().filter(id=>id.startsWith(prefix)).length}
 function updateCounts(){
-  if(typeof counts==="undefined" || !counts)return;
+  if(!counts)return;
   counts.textContent=
     `C（コモン） ${ownedCount("C")}種 / 全${C.length}種 ／ `+
     `R（レア） ${ownedCount("R")}種 / 全${R.length}種 ／ `+
@@ -182,6 +193,11 @@ function resetCollectionForTest(){
   updateCounts();
   renderCollection();
 }
+function today(){
+  const d=new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+}
+
 function saveDaily(d){localStorage.setItem(STORAGE_KEY,JSON.stringify(d))}
 function daily(){
   let d;
