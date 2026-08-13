@@ -176,11 +176,7 @@ function renderCollection(){
 }
 function toggleCollection(){const panel=document.getElementById("collectionPanel");panel.classList.toggle("open");if(panel.classList.contains("open")){renderCollection();openCollection.textContent="📕 シール図鑑を閉じる"}else{openCollection.textContent="📖 シール図鑑を見る"}}
 function resetCollectionForTest(){
-  if(!confirm("図鑑の収集状況をすべてリセットします。
-この操作は取り消せません。
-※本日のガチャ回数はリセットされません。
-
-よろしいですか？"))return;
+  if(!confirm("図鑑の収集状況をすべてリセットします。\\nこの操作は取り消せません。\\n※本日のガチャ回数はリセットされません。\\n\\nよろしいですか？"))return;
   localStorage.removeItem(COLLECTION_KEY);
   localStorage.removeItem(NEW_KEY);
   updateCounts();
