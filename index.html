@@ -52,12 +52,34 @@ h1{margin:8px 0 10px;font-size:28px}
 #hrOverlay .hr-title{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.5);font-size:clamp(32px,8vw,82px);font-weight:1000;letter-spacing:.11em;color:#fff8cf;text-shadow:0 0 8px #fff,0 0 20px #ffe16b,0 0 45px #c58d00,3px 3px 0 #000;white-space:nowrap;opacity:0;animation:hrTitle 2.45s ease forwards}@keyframes hrTitle{0%,34%{opacity:0;transform:translate(-50%,-50%) scale(.35)}48%{opacity:1;transform:translate(-50%,-50%) scale(1.18)}65%{opacity:1;transform:translate(-50%,-50%) scale(1)}82%,100%{opacity:0;transform:translate(-50%,-50%) scale(1.35)}}
 .spark{position:absolute;width:7px;height:7px;border-radius:50%;background:#fff4ad;box-shadow:0 0 12px #fff,0 0 24px #ffd64d;animation:sparkFly 1.7s ease-out forwards}@keyframes sparkFly{0%{opacity:0;transform:translate(0,0) scale(.2)}15%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.8)}}
 
+
+/* ===== テスト版：シール図鑑 ===== */
+.collection-tools{margin:18px auto 0;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.collection-btn{border:0;border-radius:12px;padding:10px 16px;font-size:16px;font-weight:bold;cursor:pointer}
+#openCollection{background:#5b2c83;color:#fff}
+#resetCollection{background:#666;color:#fff}
+#collectionPanel{display:none;width:min(96vw,760px);margin:22px auto 0;padding:16px;border:3px solid #7a5317;border-radius:18px;background:rgba(255,255,255,.84)}
+#collectionPanel.open{display:block}
+.collection-title{font-size:24px;font-weight:bold;margin:0 0 6px}
+.collection-progress{font-size:17px;font-weight:bold;margin:0 0 16px}
+.rarity-heading{margin:20px 0 10px;font-size:20px;text-align:left}
+.collection-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:12px}
+.collection-card{position:relative;padding:8px;border:2px solid #b9933d;border-radius:14px;background:#fff7d8;overflow:hidden}
+.collection-card img{width:100%;aspect-ratio:1/1;object-fit:contain;border-radius:10px;display:block}
+.collection-card.locked img{filter:brightness(0);opacity:.72}
+.collection-card .card-name{margin-top:7px;font-size:13px;font-weight:bold;line-height:1.25;min-height:32px;display:flex;align-items:center;justify-content:center}
+.collection-card .new-badge{position:absolute;right:6px;top:6px;background:#d62828;color:#fff;font-size:11px;font-weight:bold;padding:3px 6px;border-radius:999px;box-shadow:0 1px 3px rgba(0,0,0,.35)}
+.collection-card .rarity-badge{position:absolute;left:6px;top:6px;background:rgba(0,0,0,.75);color:#fff;font-size:11px;font-weight:bold;padding:3px 6px;border-radius:999px}
+.collection-note{font-size:13px;line-height:1.6;margin-top:16px;color:#555}
+@media(max-width:600px){#collectionPanel{padding:12px}.collection-grid{grid-template-columns:repeat(3,1fr);gap:8px}.collection-card{padding:6px}.collection-card .card-name{font-size:11px;min-height:28px}}
+
+
+....
 </style>
 </head>
 <body>
 <h1>ほっこりマン ガチャ</h1>
 <div class="greeting">本日もご来場、まことにありがとうございます！</div>
-<div id="counts" class="counts"></div>
 <div id="remain"></div>
 <button id="btn" onclick="gacha()">1枚引く！</button>
 <div id="stage"></div>
@@ -67,11 +89,25 @@ h1{margin:8px 0 10px;font-size:28px}
 <div id="hrOverlay"><div class="rays"></div><div class="core"></div><div class="hr-title">HOKKORI RARE</div></div>
 <a class="blog-link" href="https://ameblo.jp/mister-shimo">「Mr.しものまだまだ前途遼遠」へ</a>
 
+
+<div class="collection-tools">
+  <button id="openCollection" class="collection-btn" type="button" onclick="toggleCollection()">📖 シール図鑑を見る</button>
+  <button id="resetCollection" class="collection-btn" type="button" onclick="resetCollectionForTest()">図鑑の収集状況をリセット</button>
+</div>
+
+<section id="collectionPanel">
+  <div class="collection-title">ほっこりマン シール図鑑</div>
+  <div id="collectionProgress" class="collection-progress"></div>
+  <div id="collectionContents"></div>
+  <div class="collection-note">未所持シールはシルエット表示です。ガチャで一度でも引くとカラー画像と名前が解禁されます。<br>図鑑の収集状況だけをリセットできます。本日のガチャ回数はリセットされません。</div>
+</section>
+
+
 <script>
 const C=[["C001","Mr.しも"],["C002","北畠社長"],["C003","進藤 歩"],["C004","魚河岸 喜平次"],["C005","金山 譲"],["C006","チャック・ザ・クラッシャー"],["C007","Mr.レモ"],["C008","G（ジー）"],["C009","コビー・グッドソン"],["C010","シン"],["C011","クライム"],["C012","メカMr.しも"],["C013","ロマン・オルロフ"],["C014","ジュエル市ノ瀬"],["C015","須王 一矢"],["C016","橘 誠士郎"],["C017","仙石・GB・秀兵衛"]];
 const R=[["R001","ザ・ミック"],["R002","リー・イェフー"],["R003","サザト"],["R004","金定 雅"],["R005","カツカレーライス"],["R006","クリス・デプス"]];
 const SR=[["SR001","ジンノ・シンスケ"],["SR002","ベン“S・A・D”ジョナー"],["SR003","城戸真絃"],["SR004","ダニエル・コステロ"]];
-const HR=[["HR001","HR001"]];
+const HR=[["HR001","リー・イェフー(SP)"]];
 
 const LIMIT=3;
 const STORAGE_KEY="hokkoriman_daily_gacha_final_v1";
@@ -87,11 +123,18 @@ function getCollection(){
 function saveCollection(x){localStorage.setItem(COLLECTION_KEY,JSON.stringify(x))}
 function registerCard(id){
   const x=getCollection();
-  if(!x.includes(id)){x.push(id);saveCollection(x)}
+  if(!x.includes(id)){
+    x.push(id);
+    saveCollection(x);
+    markNewCard(id);
+  }
   updateCounts();
+  const panel=document.getElementById("collectionPanel");
+  if(panel && panel.classList.contains("open"))renderCollection();
 }
 function ownedCount(prefix){return getCollection().filter(id=>id.startsWith(prefix)).length}
 function updateCounts(){
+  if(typeof counts==="undefined" || !counts)return;
   counts.textContent=
     `C（コモン） ${ownedCount("C")}種 / 全${C.length}種 ／ `+
     `R（レア） ${ownedCount("R")}種 / 全${R.length}種 ／ `+
@@ -100,9 +143,48 @@ function updateCounts(){
 }
 updateCounts();
 
-function today(){
-  const d=new Date();
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+const NEW_KEY="hokkoriman_collection_new_v1";
+function getNewCards(){try{const x=JSON.parse(localStorage.getItem(NEW_KEY));return Array.isArray(x)?x:[]}catch(e){return []}}
+function saveNewCards(x){localStorage.setItem(NEW_KEY,JSON.stringify(x))}
+function markNewCard(id){const x=getNewCards();if(!x.includes(id)){x.push(id);saveNewCards(x)}}
+function clearNewCard(id){saveNewCards(getNewCards().filter(x=>x!==id))}
+function imageFallback(img,id,index=0){const ext=[".png",".jpg",".jpeg",".webp",".PNG",".JPG",".JPEG",".WEBP"];const next=index+1;if(next>=ext.length){img.onerror=null;img.style.visibility="hidden";return}img.onerror=()=>imageFallback(img,id,next);img.src=id+ext[next]}
+function collectionGroups(){return [{label:"C（コモン）",rarity:"C",list:C},{label:"R（レア）",rarity:"R",list:R},{label:"SR（スーパーレア）",rarity:"SR",list:SR},{label:"HR（ほっこりレア）",rarity:"HR",list:HR}]}
+function renderCollection(){
+  const owned=new Set(getCollection()),newSet=new Set(getNewCards());
+  const all=collectionGroups().flatMap(g=>g.list);
+  const ownedTotal=all.filter(c=>owned.has(c[0])).length;
+  collectionProgress.textContent=`所持 ${ownedTotal} / ${all.length}種（${Math.round(ownedTotal/all.length*100)}％）`;
+  collectionContents.innerHTML="";
+  for(const group of collectionGroups()){
+    const h=document.createElement("h3");h.className="rarity-heading";
+    h.textContent=`${group.label}　${group.list.filter(c=>owned.has(c[0])).length} / ${group.list.length}`;
+    collectionContents.appendChild(h);
+    const grid=document.createElement("div");grid.className="collection-grid";
+    for(const [id,cardName] of group.list){
+      const isOwned=owned.has(id),card=document.createElement("div");
+      card.className="collection-card"+(isOwned?"":" locked");
+      const rb=document.createElement("span");rb.className="rarity-badge";rb.textContent=group.rarity;card.appendChild(rb);
+      if(isOwned&&newSet.has(id)){const nb=document.createElement("span");nb.className="new-badge";nb.textContent="NEW!";card.appendChild(nb)}
+      const img=document.createElement("img");img.src=id+".png";img.alt=isOwned?cardName:"未所持";img.onerror=()=>imageFallback(img,id,0);card.appendChild(img);
+      const nm=document.createElement("div");nm.className="card-name";nm.textContent=isOwned?cardName:"？？？？？";card.appendChild(nm);
+      if(isOwned)card.addEventListener("click",()=>{clearNewCard(id);renderCollection()});
+      grid.appendChild(card);
+    }
+    collectionContents.appendChild(grid);
+  }
+}
+function toggleCollection(){const panel=document.getElementById("collectionPanel");panel.classList.toggle("open");if(panel.classList.contains("open")){renderCollection();openCollection.textContent="📕 シール図鑑を閉じる"}else{openCollection.textContent="📖 シール図鑑を見る"}}
+function resetCollectionForTest(){
+  if(!confirm("図鑑の収集状況をすべてリセットします。
+この操作は取り消せません。
+※本日のガチャ回数はリセットされません。
+
+よろしいですか？"))return;
+  localStorage.removeItem(COLLECTION_KEY);
+  localStorage.removeItem(NEW_KEY);
+  updateCounts();
+  renderCollection();
 }
 function saveDaily(d){localStorage.setItem(STORAGE_KEY,JSON.stringify(d))}
 function daily(){
@@ -173,6 +255,8 @@ function showResult(result,img){
   stage.appendChild(box);
   name.textContent=result.rarity+"　"+result.card[1];
 }
+
+
 async function gacha(){
   if(playing)return;
   const d=daily();
