@@ -120,7 +120,7 @@ const R=[["R001","ザ・ミック"],["R002","リー・イェフー"],["R003","�
 const SR=[["SR001","ジンノ・シンスケ"],["SR002","ベン“S・A・D”ジョナー"],["SR003","城戸真絃"],["SR004","ダニエル・コステロ"]];
 const HR=[["HR001","リー・イェフー(SP)"]];
 
-const LIMIT=3;
+const LIMIT=5;
 const STORAGE_KEY="hokkoriman_daily_gacha_final_v1";
 const COLLECTION_KEY="hokkoriman_collection_v1";
 let playing=false;
@@ -219,8 +219,8 @@ function updateStatus(){
 function rand(list){return list[Math.floor(Math.random()*list.length)]}
 function draw(){
   const n=Math.random()*100;
-  if(n<68.5)return{rarity:"C",card:rand(C)};
-  if(n<93.5)return{rarity:"R",card:rand(R)};
+  if(n<80)return{rarity:"C",card:rand(C)};
+  if(n<94)return{rarity:"R",card:rand(R)};
   if(n<99.5)return{rarity:"SR",card:rand(SR)};
   return{rarity:"HR",card:rand(HR)};
 }
